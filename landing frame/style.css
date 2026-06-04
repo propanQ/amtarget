@@ -29,7 +29,7 @@
   --black: #000;
   --error: #ff6363;
   --font-title: "BF_Modernista", sans-serif;
-  --font-btn: "BF_SUB_HEADLINE", "BF_Modernista", sans-serif;
+  --font-btn: "HelveticaNeueCyr", sans-serif; /* шрифт кнопок: HelveticaNeue Medium, без капіталізації */
   --font-heading: "BF_SUB_HEADLINE", "BF_Modernista", sans-serif;
   --font-body: "BF_TEXT", "HelveticaNeueCyr", sans-serif;
   --font-mono: "BF_MONO", ui-monospace, monospace;
@@ -362,14 +362,14 @@
   padding: 0 28px;
   border: 1px solid transparent;
   border-radius: var(--r-btn);
-  /* шрифт кнопок Battlefield 6 (bfheading = BF_SUB_HEADLINE), uppercase + широкий трекінг */
+  /* шрифт кнопок: HelveticaNeue Medium, без капіталізації, трекінг 2% */
   font-family: var(--font-btn);
-  font-weight: 700;
-  font-size: 14px;
+  font-weight: 500;
+  font-size: 16px;
   line-height: 1.2;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.02em;
   text-align: center;
-  text-transform: uppercase;
+  text-transform: none;
   cursor: pointer;
   /* як у дизайн-системі сайту: тільки колір, без руху й тіні */
   transition: background-color 0.35s ease, border-color 0.35s ease, color 0.35s ease;
@@ -422,11 +422,9 @@
    (центровані) — жодних правил поза @media. На моб.: текст ліворуч, іконка притиснута до
    правого краю (по центру по вертикалі), тісніший бічний padding, керований <br> у написі.
    Висоту НЕ чіпаємо (min-height), вертикаль симетрична → зверху/знизу однаково. */
-.landing__btn-br { display: none; }
 @media (max-width: 480px) {
   .landing__btn--lead { justify-content: flex-start; text-align: left; padding-left: 16px; padding-right: 16px; }
   .landing__btn--lead .landing__btn-label { flex: 1 1 auto; text-align: left; }
-  .landing__btn-br { display: inline; }
 }
 
 /* ==========================================================================
@@ -496,7 +494,7 @@
 
 /* бейдж A.M.TARGET — суцільний чорний бокс + heading-шрифт (як у макеті) */
 .landing__hero--banner .landing__hero-badge {
-  margin: 0 0 6px;                   /* щільно до H1 — зазор 6px як у Figma (низ y308 → H1 y314) */
+  margin: 0 0 clamp(10px, 1vw, 16px); /* трохи більше повітря між бейджем-eyebrow і H1 (читається легше) */
   background: #000;
   border: none;                      /* суцільний чорний бокс без обводки → висота рівно 31px */
   gap: 18px;                         /* зазор «лого ↔ приціл» як у Figma */
@@ -515,32 +513,35 @@
 .landing__hero-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: clamp(22px, 3vw, 30px);
+  gap: clamp(26px, 3.4vw, 40px);
 }
 /* права секція на десктопі: притиснута до правого краю, ширина = по кнопках;
    підзаголовок/кнопки лівим краєм збігаються (бо обидва ліворуч у цьому блоці) */
 .landing__hero-side { display: flex; flex-direction: column; }
 @media (min-width: 1024px) {
   .landing__hero-grid {
-    grid-template-columns: var(--col-2);
+    /* дзеркало 5/7 → 7/5: блок-side (кнопки) ліворуч у широкій колонці, спеки праворуч у вузькій */
+    grid-template-columns: var(--col-2-rev);
     grid-template-areas:
       "title title"
-      "specs side";
+      "side specs";
     grid-template-rows: auto auto;
     column-gap: var(--col-gap);
-    row-gap: 0;
+    /* повітря між H1 і нижнім рядом (раніше 0 + відʼємний margin тягнули догори) */
+    row-gap: clamp(18px, 2.2vw, 36px);
     align-items: start;
   }
-  /* H1 над контентом; відʼємний нижній відступ → нижня частина підтягується (компактніше) */
-  .landing__hero-g-title { grid-area: title; max-width: min(100%, 1010px); margin: 0 0 clamp(-30px, -1.7vw, -12px); }
-  .landing__hero-g-specs { grid-area: specs; align-self: end; }
+  /* H1 над контентом; без відʼємного відступу → нижній ряд «дихає», а не підтягнутий впритул */
+  .landing__hero-g-title { grid-area: title; max-width: min(100%, 1010px); margin: 0; }
+  /* спеки тепер праворуч → притискаємо до правого краю колонки */
+  .landing__hero-g-specs { grid-area: specs; align-self: end; margin-left: auto; }
   .landing__hero-g-side  {
     grid-area: side;
-    align-self: start;
+    align-self: end;             /* низ блоку (кнопки) на одній лінії зі спеками праворуч */
     width: fit-content;          /* ширина = по найширшому (кнопки) */
     max-width: 100%;
-    margin-left: auto;           /* притискаємо до правого краю колонки */
-    gap: clamp(22px, 2.4vw, 32px);
+    /* тепер ліворуч → лівим краєм по краю колонки (без margin-left:auto) */
+    gap: clamp(16px, 1.8vw, 24px); /* підзаголовок ближче до кнопок (трохи щільніше) */
   }
 }
 
@@ -637,7 +638,9 @@
 @media (min-width: 1024px) { .landing__hero-subtitle { font-size: 22px; } }
 .landing__hero-subtitle-accent { color: var(--accent); }
 @media (min-width: 1024px) {
-  .landing__hero--banner .landing__hero-subtitle { margin: 0; font-size: clamp(21px, 1.74vw, 25px); max-width: 530px; }
+  /* підзаголовок розтягуємо рівно по ширині кнопок: width:0 + min-width:100% не
+     роздуває fit-content блок-side (ширину задають кнопки), а текст переноситься по них */
+  .landing__hero--banner .landing__hero-subtitle { margin: 0; font-size: clamp(21px, 1.74vw, 25px); width: 0; min-width: 100%; max-width: none; }
 }
 
 /* переваги — «спек-лист»: тонкі лінії + технічна нумерація, без галочок */
@@ -651,8 +654,8 @@
 .landing__hero-spec {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 13px 2px;
+  gap: 20px;
+  padding: clamp(15px, 1.5vw, 20px) 2px;
   border-bottom: 1px solid var(--border-soft);
 }
 .landing__hero-spec-num {
@@ -693,12 +696,12 @@
 }
 
 /* права колонка band B: кнопки + нотатка */
-.landing__hero-cta { display: flex; flex-direction: column; align-items: flex-start; }
+.landing__hero-cta { display: flex; flex-direction: column; align-items: flex-start; position: relative; }
 
 .landing__hero-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 14px;
   margin: 0;
 }
 .landing__hero-actions .landing__btn { flex: 1 1 auto; }
@@ -710,7 +713,7 @@
   display: inline-flex;
   align-items: center;
   gap: 11px;
-  margin: clamp(14px, 1.4vw, 20px) 0 0;
+  margin: clamp(18px, 1.8vw, 26px) 0 0;
   font-size: 14px;
   line-height: 1.3;
   font-weight: 500;
@@ -731,6 +734,17 @@
 }
 .landing__hero--banner .landing__hero-note-ico { color: var(--accent); }
 .landing__hero-note-accent { color: var(--l-green); font-weight: 700; }
+/* десктоп: нотатку «30 хв» виводимо з потоку вниз під кнопки → її висота більше не
+   подовжує блок-side, тож кнопки і спеки праворуч лягають рівно на одну нижню лінію */
+@media (min-width: 1024px) {
+  .landing__hero--banner .landing__hero-note {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin: clamp(16px, 1.6vw, 22px) 0 0;
+    white-space: nowrap;
+  }
+}
 
 /* ==========================================================================
    2 · SOCIAL PROOF — band з лічильниками
@@ -958,8 +972,10 @@
   padding: 0;
   list-style: none;
 }
-@media (min-width: 560px)  { .landing__cats-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; } }
-@media (min-width: 1024px) { .landing__cats-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
+/* minmax(0, 1fr) — щоб колонки не «розпирали» сітку до min-content довгих
+   назв («Кулеуловлювачі») й не давали горизонтального скролу */
+@media (min-width: 560px)  { .landing__cats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; } }
+@media (min-width: 1024px) { .landing__cats-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; } }
 
 /* ── картка-категорія: горизонтальна — прозорий виріз товару (без підкладки/рамки)
    ліворуч, назва + кількість праворуч, іконка-чіп у кутку, шеврон у кінці ── */
@@ -1013,8 +1029,7 @@
 .landing__cat-ico svg { display: block; }
 
 .landing__cat-body { flex: 1 1 auto; display: flex; flex-direction: column; gap: 78px; min-width: 0; }
-.landing__cat-name { font-family: var(--font-heading); /* BF_SUB_HEADLINE */ font-weight: 500; font-size: 17px; line-height: 1.2; text-transform: uppercase; color: var(--white); }
-@media (min-width: 1024px) { .landing__cat-name { font-size: 19px; } }
+.landing__cat-name { font-family: var(--font-heading); /* BF_SUB_HEADLINE */ font-weight: 500; font-size: 17px; line-height: 1.2; text-transform: uppercase; color: var(--white); overflow-wrap: break-word; hyphens: auto; }
 /* кількість моделей — контурний акцент-чип: моно-число у жовтій ghost-рамці
    (accent-tint + accent-line) + пропорційне body-слово приглушеним капсом.
    Ховер «активує» чип — суцільна жовта заливка, чорний текст. */
@@ -1099,8 +1114,8 @@
   font-family: var(--font-btn);
   font-weight: 500;
   font-size: 13px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  text-transform: none;
   white-space: nowrap;
 }
 
@@ -1151,6 +1166,28 @@
   .landing__cats-anchor-text { font-size: 12px; letter-spacing: 0.04em; }
 }
 
+/* ── ПЛАНШЕТ (2 кол., 560–1023): трохи менший виріз + щільніші відступи,
+   щоб картки мали більше місця для тексту ── */
+@media (min-width: 560px) and (max-width: 1023px) {
+  .landing__cat { gap: 18px; padding: 22px 20px; }
+  .landing__cat-media { width: 110px; height: 110px; }
+}
+
+/* ── КОМПАКТНИЙ ДЕСКТОП (3 кол., 1024–1399): на вузькому лептопі повний
+   156px-виріз + 21px-назва не вкладались у 3 колонки (довге «Кулеуловлювачі»
+   розпирало сітку → горизонтальний скрол). Зменшуємо виріз (плавний clamp
+   116→156px), стискаємо відступи й тримаємо назву 17px. На ≥1400 повертаємось
+   до повного розміру (див. нижче). ── */
+@media (min-width: 1024px) and (max-width: 1399px) {
+  .landing__cats-grid { gap: 14px; }
+  .landing__cat { gap: 16px; padding: 22px 20px; min-height: 196px; }
+  .landing__cat-media {
+    width: clamp(116px, calc(10.64vw + 7.05px), 156px);
+    height: clamp(116px, calc(10.64vw + 7.05px), 156px);
+  }
+  .landing__cat-name { font-size: 17px; }
+}
+
 /* ==========================================================================
    4 · WHY US — редакторське «дос'є»: офер-знижка (ліворуч, акцентна зона)
    + реєстр переваг рядками з роздільниками (праворуч, без карток-коробок).
@@ -1184,24 +1221,30 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 @media (min-width: 1024px) {
-  .landing__why-offer { padding: 44px 40px; }
+  .landing__why-offer { padding: 48px 40px; }
 }
-@media (min-width: 1400px) { .landing__why-offer { padding: 52px 48px; } }
+@media (min-width: 1400px) { .landing__why-offer { padding: 56px 48px; } }
+
+/* офер — вертикальна композиція з рівними інтервалами між блоками */
+.landing__why-offer-main {
+  display: flex;
+  flex-direction: column;
+}
 
 /* іконка-знижка над заголовком — конгруентно з accent-іконками правого реєстру */
 .landing__why-offer-ico {
   display: inline-flex;
-  margin: 0 0 16px;
+  margin: 0 0 22px;
   color: var(--accent);
 }
 .landing__why-offer-ico svg { width: 30px; height: 30px; }
 
 .landing__why-offer-title {
-  margin: 0 0 16px;
+  margin: 0;
   font-family: var(--font-title);
   font-weight: 700;
   font-size: 26px;
-  line-height: 1.12;
+  line-height: 1.14;
   letter-spacing: 0.005em;
   color: var(--white);
   text-transform: uppercase;
@@ -1211,66 +1254,50 @@
 @media (min-width: 1024px) { .landing__why-offer-title { font-size: 30px; } }
 @media (min-width: 1400px) { .landing__why-offer-title { font-size: 36px; } }
 
-.landing__why-offer-text {
-  margin: 0;
-  max-width: 38ch;
-  font-size: 16px;
-  line-height: 1.55;
-  color: var(--text-2);
-}
-@media (min-width: 1400px) { .landing__why-offer-text { font-size: 17px; } }
+.landing__why-offer-cta { margin-top: 36px; align-self: flex-start; }
 
-.landing__why-offer-cta { margin-top: 28px; align-self: flex-start; }
-
-/* умови-футер «дос'є»: 2 стовпці в краях панелі (eyebrow + рядок) —
-   дзеркало реєстру About: спільна верхня лінія, жовтий акцент посегментно
-   над головним стовпцем. На десктопі притиснутий до нижнього краю панелі. */
+/* умови як двоярусні булети (дзеркало рядків правого реєстру: тезис + опис):
+   жовтий шеврон-маркер конгруентно зі стрілками кнопок, без коробок/ліній */
 .landing__why-offer-foot {
   margin: 30px 0 0;
   padding: 0;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-}
-@media (min-width: 480px) {
-  .landing__why-offer-foot { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@media (min-width: 1024px) {
-  .landing__why-offer-foot { margin-top: auto; padding-top: 30px; }
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 .landing__why-offer-foot-cell {
-  /* моб. (1 колонка): клітинки стоять стовпчиком — симетричний вертикальний
-     padding, щоб кожна лінія-роздільник (сіра/жовта) мала однакове повітря
-     і не приклеювалась до тексту попередньої клітинки */
-  padding: 16px 0;
-  border-top: 1px solid var(--border-soft);
+  position: relative;
+  padding-left: 30px;
 }
-@media (min-width: 480px) {
-  /* 2 колонки: спільна верхня лінія + вертикальний роздільник —
-     притискаємо вміст до верхньої лінії (малий нижній padding) */
-  .landing__why-offer-foot-cell { padding: 16px 18px 2px 0; }
-  .landing__why-offer-foot-cell + .landing__why-offer-foot-cell {
-    padding-left: 22px;
-    border-left: 1px solid var(--border-soft);
-  }
+.landing__why-offer-foot-cell::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 0.62em;
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid var(--accent);
+  border-bottom: 2px solid var(--accent);
+  transform: translateY(-50%) rotate(-45deg);
 }
-/* головний стовпець — жовта верхня лінія саме над ним (хірургічно) */
-.landing__why-offer-foot-cell--lead { border-top-color: var(--accent); }
 .landing__why-offer-foot-label {
-  margin: 0 0 8px;
-  font-family: var(--font-title);
+  display: block;
+  margin-bottom: 5px;
   font-weight: 700;
-  font-size: 12px;
-  line-height: 1.3;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-3);
+  font-size: 17px;
+  line-height: 1.25;
+  color: var(--white);
 }
-.landing__why-offer-foot-cell--lead .landing__why-offer-foot-label { color: var(--accent); }
 .landing__why-offer-foot-text {
-  margin: 0;
-  font-size: 14.5px;
+  display: block;
+  font-size: 15px;
   line-height: 1.5;
   color: var(--text-2);
+}
+@media (min-width: 1400px) {
+  .landing__why-offer-foot-label { font-size: 18px; }
+  .landing__why-offer-foot-text { font-size: 15.5px; }
 }
 
 /* --- ПРАВОРУЧ: реєстр переваг (рядки з тонкими роздільниками) --- */
@@ -1335,28 +1362,19 @@
    паддінги, іконки та шрифти (конвенція max-width:559 як у категоріях) */
 @media (max-width: 559px) {
   .landing__why-offer { padding: 22px 18px; }
-  .landing__why-offer-ico { margin-bottom: 12px; }
+  .landing__why-offer-ico { margin-bottom: 16px; }
   .landing__why-offer-ico svg { width: 24px; height: 24px; }
-  .landing__why-offer-title { font-size: 20px; margin-bottom: 12px; }
-  .landing__why-offer-text { font-size: 14px; }
-  .landing__why-offer-cta { margin-top: 20px; }
-  .landing__why-offer-foot { margin-top: 22px; }
-  .landing__why-offer-foot-label { font-size: 11px; margin-bottom: 6px; }
+  .landing__why-offer-title { font-size: 20px; }
+  .landing__why-offer-cta { margin-top: 24px; }
+  .landing__why-offer-foot { margin-top: 22px; gap: 18px; }
+  .landing__why-offer-foot-cell { padding-left: 26px; }
+  .landing__why-offer-foot-label { font-size: 15px; }
   .landing__why-offer-foot-text { font-size: 13.5px; }
 
   .landing__why-row { padding: 17px 18px; column-gap: 14px; }
   .landing__why-row-ico svg { width: 22px; height: 22px; }
   .landing__why-row-title { font-size: 16.5px; margin-bottom: 5px; }
   .landing__why-row-text { font-size: 13.5px; }
-}
-/* foot — паддінги залежать від layout: 1-кол. (≤479) симетрично, 2-кол.
-   (480–559) тиснемо до верхньої лінії з меншими горизонт. відступами */
-@media (max-width: 479px) {
-  .landing__why-offer-foot-cell { padding: 13px 0; }
-}
-@media (min-width: 480px) and (max-width: 559px) {
-  .landing__why-offer-foot-cell { padding: 13px 14px 2px 0; }
-  .landing__why-offer-foot-cell + .landing__why-offer-foot-cell { padding-left: 16px; }
 }
 
 /* ==========================================================================
@@ -1528,6 +1546,19 @@
 .shortcard:hover { border-color: #00a046; color: #c9ffe1; }
 .shortcard:hover .btn-add_to_cart { background-color: #00a046; color: #fff; }
 .shortcard.is-hidden { display: none; }
+
+/* кнопки дизайн-системи сайту на лендінгу: HelveticaNeue Medium, без uppercase, трекінг 2%
+   (перебиваємо зашиті в assets/css/styles.css weight:700 / uppercase / 0.14em) */
+.landing .btn-more,
+.landing .btn-add_to_cart,
+.landing .btn-add_to_cart--accent,
+.landing .btn-file {
+  font-family: var(--font-btn);
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
 
 .shortcard__thumb { display: block; margin: -20px -20px 20px; }
 .shortcard__thumb img {
@@ -1858,7 +1889,9 @@
   transition: color 0.35s ease;
 }
 .landing__faq-list { counter-reset: faq; }
-.landing__faq-q:hover { color: var(--accent); }
+@media (hover: hover) {
+  .landing__faq-q:hover { color: var(--accent); }
+}
 .landing__faq-q-text { flex: 1 1 auto; }
 .landing__faq-q::after {
   content: "";
@@ -1996,6 +2029,17 @@
   text-align: center;
 }
 .landing__reviews-note svg { flex: 0 0 auto; }
+/* Моб: текст переноситься у 2 рядки — центрування ламає композицію (замок висить
+   зліва, текст центрований сам у собі). Вирівнюємо блок ліворуч, замок тримаємо
+   верхнього рядка (align-items: flex-start + дрібний зсув під cap-height). */
+@media (max-width: 600px) {
+  .landing__reviews-note {
+    justify-content: flex-start;
+    align-items: flex-start;
+    text-align: left;
+  }
+  .landing__reviews-note svg { margin-top: 2px; }
+}
 
 /* ==========================================================================
    9 · ПРО КОМПАНІЮ
@@ -2011,6 +2055,15 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+/* мобільний: іскри в back2.png зібрані в центрі кадру. На вузькому екрані
+   cover показує саме цю центральну «іскристу» вертикальну смугу — і дрібний
+   текст реєстру (Контроль/Виробництво/Документи) лягає просто на іскри.
+   Зміщуємо кадр у спокійну ліву зону: текст лишається на рівному темному тлі,
+   іскри відходять убік як атмосфера. (Пан надійніший за зум — зум лишив би
+   іскри по центру кадру.) */
+@media (max-width: 767px) {
+  .landing__about { background-position: 12% center; }
 }
 
 .landing__about-inner { display: grid; grid-template-columns: 1fr; gap: 30px; }
@@ -2265,7 +2318,7 @@
   position: absolute;
   inset: 1px;
   z-index: -1;
-  background: #1d2526;
+  background: #242f30;               /* піднята поверхня: світліша за фон сторінки (#161d1e), щоб картка читалася як окрема плашка */
   border-radius: inherit;
   clip-path: inherit;
 }
@@ -2298,7 +2351,7 @@
   font-size: 11px;
   line-height: 1.2;
   letter-spacing: 0.1em;
-  color: var(--text-3);
+  color: rgba(255, 255, 255, 0.74);   /* лейбли — головний ідентифікатор поля: яскравіше за text-3 (56%), щоб чітко читались на темній плашці */
   text-transform: uppercase;
 }
 .landing__field.required .landing__field-label::after { content: " *"; color: var(--accent); }
@@ -2307,17 +2360,17 @@
   width: 100%;
   min-height: 52px;
   padding: 0 16px;
-  border: 1px solid var(--border-soft);
+  border: 1px solid transparent;                 /* без видимої рамки — контраст дає темна заливка */
   border-radius: 8px;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.44);
   font-family: inherit;
   font-size: 15px;
   line-height: 1.2;
   color: var(--white);
-  transition: border-color 0.35s ease, box-shadow 0.35s ease;
+  transition: background-color 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
 }
-.landing__field-input::placeholder { color: var(--text-3); }
-.landing__field-input:hover { border-color: var(--border-hover); }
+.landing__field-input::placeholder { color: rgba(255, 255, 255, 0.72); }
+.landing__field-input:hover { background: rgba(0, 0, 0, 0.52); }
 .landing__field-input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 1px var(--accent); }
 .landing__field-hint { display: block; margin-top: 8px; font-size: 12px; line-height: 1.3; color: var(--text-3); }
 
@@ -2334,7 +2387,7 @@
   line-height: 1.1;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--text-3);
+  color: rgba(255, 255, 255, 0.74);   /* в один тон з лейблами полів — читабельно на темному */
 }
 .landing__chips {
   display: grid;
@@ -2350,14 +2403,14 @@
   justify-content: center;
   min-height: 46px;
   padding: 0 10px;
-  border: 1px solid var(--border-soft);
+  border: 1px solid rgba(255, 255, 255, 0.16);   /* тиха рамка-привид (сегмент — це вибір, а не заливне поле) */
   border-radius: 8px;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.03);
   font-size: 14px;
   line-height: 1.1;
   text-align: center;
   white-space: nowrap;
-  color: var(--text-2);
+  color: var(--white);
   transition: border-color 0.35s ease, background-color 0.35s ease, color 0.35s ease;
 }
 .landing__chip:hover .landing__chip-face { border-color: var(--border-hover); color: var(--white); }
@@ -2375,12 +2428,12 @@
   min-height: 66px;
   justify-content: center;
   padding: 13px 16px 14px;
-  border: 1px solid var(--border-soft);
+  border: 1px solid transparent;                 /* без видимої рамки — поле читається завдяки темній заливці, а не обводці */
   border-radius: 8px;
-  background: rgba(0, 0, 0, 0.2);
-  transition: border-color 0.35s ease, box-shadow 0.35s ease;
+  background: rgba(0, 0, 0, 0.44);                /* темний «колодязь» — контраст зі світлішою карткою, але не «чорна діра» */
+  transition: background-color 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
 }
-.landing__field--box:hover { border-color: var(--border-hover); }
+.landing__field--box:hover { background: rgba(0, 0, 0, 0.52); }
 .landing__field--box:focus-within { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
 .landing__field--box .landing__field-label {
   margin: 0;
@@ -2406,7 +2459,7 @@
 }
 .landing__field--box .landing__field-input:hover,
 .landing__field--box .landing__field-input:focus { border: 0; box-shadow: none; }
-.landing__field--box .landing__field-input::placeholder { color: var(--text-3); }
+.landing__field--box .landing__field-input::placeholder { color: rgba(255, 255, 255, 0.7); }
 
 .landing__consent { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; font-size: 14px; line-height: 1.35; color: var(--text-2); cursor: pointer; }
 .landing__consent input { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); }
@@ -2630,7 +2683,7 @@
 
 /* компактна кнопка (НЕ на всю ширину) — менший габарит за акцентні CTA */
 .landing__contacts-action { flex: 0 0 auto; min-height: 52px; padding: 0 24px; font-size: 14px; }
-.landing__contacts-action .landing__btn-ico { color: var(--green); width: 18px; height: 18px; }
+.landing__contacts-action .landing__btn-ico { color: var(--black); width: 22px; height: 22px; }
 
 /* ── ПРАВА ЗОНА: інші канали + прямі реквізити (темна поверхня) ── */
 .landing__contacts-rail {
@@ -2733,52 +2786,6 @@
 a.landing__rail-value:hover,
 a.landing__rail-value:focus-visible { color: var(--accent); }
 
-/* офіційна-нота: тиха «бірка» в мові сайту — плашка ТЕМНІША за фон рейки
-   (втоплений well; відділяється тоном, БЕЗ обводки/тіней/градієнтів),
-   лаконічний жовтий значок-документ із галочкою. */
-.landing__rail-note {
-  display: flex;
-  align-items: center;          /* іконка-плашка та текст на одній горизонтальній лінії */
-  gap: 13px;
-  margin: 26px 0 0;
-  padding: 15px 16px;
-  border-radius: 10px;
-  background: rgba(0, 0, 0, 0.25);
-}
-@media (min-width: 1024px) { .landing__rail-note { margin-top: auto; } }
-
-/* іконка «вписана» у власну плашку: ще темніший well (відділення тоном),
-   БЕЗ обводки/тіней/глоу/грані — за правилом rail-note */
-.landing__rail-note-plate {
-  flex: 0 0 auto;
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 9px;
-  background: rgba(0, 0, 0, 0.22);
-}
-.landing__rail-note-ico {
-  width: 22px;
-  height: 22px;
-  color: var(--accent);
-}
-.landing__rail-note-body { margin: 0; min-width: 0; }
-.landing__rail-note-title {
-  display: block;
-  font-weight: 600;
-  font-size: 13.5px;
-  line-height: 1.35;
-  color: var(--white);
-}
-.landing__rail-note-sub {
-  display: block;
-  margin-top: 4px;
-  font-size: 12.5px;
-  line-height: 1.45;
-  color: var(--text-3);
-}
-
 /* ==========================================================================
    РУХ: поява при скролі + повага до prefers-reduced-motion
    ========================================================================== */
@@ -2818,14 +2825,9 @@ a.landing__rail-value:focus-visible { color: var(--accent); }
   .landing__hero-spec-num { font-size: 17px; }
   .landing__hero-spec-text { font-size: 20px; }
 
-  /* 3 · КАТЕГОРІЇ */
-  .landing__cat-name { font-size: 21px; }
+  /* 3 · КАТЕГОРІЇ (назва 21px перенесена в @1400 — на 1024–1399 тримаємо 17px) */
   .landing__cat-count { font-size: 12.5px; letter-spacing: 0.06em; }
   .landing__cat-count b { font-size: 14px; }
-
-  /* 4 · WHY US — офер */
-  .landing__why-offer-text { font-size: 19px; }
-  .landing__why-offer-foot-text { font-size: 15px; }
 
   /* 7 · FAQ */
   .landing__faq-q { font-size: 20px; }
@@ -2849,8 +2851,6 @@ a.landing__rail-value:focus-visible { color: var(--accent); }
   .landing__channel { font-size: 14px; }
   .landing__rail-label { font-size: 12px; }
   .landing__rail-value { font-size: 22px; }
-  .landing__rail-note-title { font-size: 14px; }
-  .landing__rail-note-sub { font-size: 12.5px; }
 }
 
 /* широкі екрани — крупні абзаци ще трохи більші (іде після @1024 → виграє) */
@@ -2858,5 +2858,6 @@ a.landing__rail-value:focus-visible { color: var(--accent); }
   .landing__lead { font-size: 21px; }
   .landing__cats-lead { font-size: 20px; }
   .landing__hero-subtitle { font-size: 25px; }
-  .landing__why-offer-text { font-size: 20px; }
+  /* повний розмір назви категорії — лише коли є місце на 3 колонки */
+  .landing__cat-name { font-size: 21px; }
 }

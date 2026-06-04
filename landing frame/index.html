@@ -151,7 +151,7 @@
             </p>
             <div class="landing__hero-cta">
               <div class="landing__hero-actions" data-reveal>
-                <a href="#rfq" class="landing__btn landing__btn--primary landing__btn--lead"><span class="landing__btn-label">Підібрати мішені <br class="landing__btn-br">для підрозділу</span>
+                <a href="#rfq" class="landing__btn landing__btn--primary landing__btn--lead"><span class="landing__btn-label">Підібрати мішені для підрозділу</span>
                   <span class="landing__btn-arrow" aria-hidden="true"></span>
                 </a>
                 <a href="#contacts" class="landing__btn landing__btn--outline"><span>Написати у <span class="landing__btn-accent-green">WhatsApp</span></span><img class="landing__btn-ico" src="assets/img/logos_whatsapp-icon.svg" width="20" height="20" alt="" aria-hidden="true"></a>
@@ -233,7 +233,7 @@
             <p class="landing__suptitle" data-reveal>Власне виробництво</p>
             <h2 class="landing__title" data-reveal>Що ми <span class="landing__title-accent">виготовляємо</span></h2>
           </div>
-          <p class="landing__lead landing__cats-lead" data-reveal>Понад 30 моделей мішеней, стендів і кулеуловлювачів, від типових до нестандартних під ваш запит</p>
+          <p class="landing__lead landing__cats-lead" data-reveal>Понад 30 моделей <span class="landing__lead-mute">мішеней, стендів і кулеуловлювачів, від типових до нестандартних під ваш запит</span></p>
         </div>
 
         <ul class="landing__cats-grid">
@@ -379,22 +379,21 @@
                 <svg width="30" height="30" viewBox="0 0 26 26" fill="none"><path d="M21.5 4.5H13L3.5 14a1.7 1.7 0 0 0 0 2.4l6.1 6.1a1.7 1.7 0 0 0 2.4 0L21.5 13V4.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="17.3" cy="8.7" r="1.7" stroke="currentColor" stroke-width="1.6"/></svg>
               </span>
               <h3 class="landing__why-offer-title"><span class="landing__why-offer-title-hi">Знижка</span> для військових частин</h3>
-              <p class="landing__why-offer-text">Чим більший обсяг&nbsp;— тим вигідніша ціна</p>
-              <a href="#rfq" class="landing__btn landing__btn--primary landing__why-offer-cta landing__btn--lead"><span class="landing__btn-label">Дізнатись розмір знижки</span>
+              <!-- умови як булет-список на місці колишнього тэгляйну -->
+              <ul class="landing__why-offer-foot">
+                <li class="landing__why-offer-foot-cell">
+                  <span class="landing__why-offer-foot-label">Індивідуальний розрахунок</span>
+                  <span class="landing__why-offer-foot-text">під ваш запит та обсяг&nbsp;КП</span>
+                </li>
+                <li class="landing__why-offer-foot-cell">
+                  <span class="landing__why-offer-foot-label">Фіксована ціна в договорі</span>
+                  <span class="landing__why-offer-foot-text">без прихованих умов</span>
+                </li>
+              </ul>
+              <a href="mailto:amtarget.shop@gmail.com" class="landing__btn landing__btn--primary landing__why-offer-cta landing__btn--lead"><span class="landing__btn-label">Написати на email</span>
                 <span class="landing__btn-arrow" aria-hidden="true"></span>
               </a>
             </div>
-            <!-- умови як футер «дос'є»: 2 стовпці в краях панелі (eyebrow + рядок), жовтий акцент на головному -->
-            <dl class="landing__why-offer-foot">
-              <div class="landing__why-offer-foot-cell">
-                <dt class="landing__why-offer-foot-label">Індивідуальний прорахунок</dt>
-                <dd class="landing__why-offer-foot-text">під ваш запит та обсяг&nbsp;КП</dd>
-              </div>
-              <div class="landing__why-offer-foot-cell landing__why-offer-foot-cell--lead">
-                <dt class="landing__why-offer-foot-label">Фіксована ціна в договорі</dt>
-                <dd class="landing__why-offer-foot-text">без прихованих умов</dd>
-              </div>
-            </dl>
           </div>
 
           <!-- ПРАВОРУЧ: реєстр переваг (рядки з роздільниками, без карток) -->
@@ -688,27 +687,27 @@
           </div>
         </div>
         <div class="landing__faq-list" data-reveal>
-          <details class="landing__faq-itm" open>
+          <details class="landing__faq-itm" name="faq" open>
             <summary class="landing__faq-q"><span class="landing__faq-q-text">Які документи входять у комплект?</span></summary>
             <div class="landing__faq-a">Видаткова накладна, рахунок-фактура, сертифікати на сталь (Hardox 500 / AR500), ТТХ виробу та договір під формат закупівлі В/Ч.</div>
           </details>
-          <details class="landing__faq-itm">
+          <details class="landing__faq-itm" name="faq">
             <summary class="landing__faq-q"><span class="landing__faq-q-text">Який мінімальний обсяг для знижки?</span></summary>
             <div class="landing__faq-a">Текст відповіді узгоджується з клієнтом.</div>
           </details>
-          <details class="landing__faq-itm">
+          <details class="landing__faq-itm" name="faq">
             <summary class="landing__faq-q"><span class="landing__faq-q-text">Скільки триває виготовлення і доставка?</span></summary>
             <div class="landing__faq-a">Текст відповіді узгоджується з клієнтом.</div>
           </details>
-          <details class="landing__faq-itm">
+          <details class="landing__faq-itm" name="faq">
             <summary class="landing__faq-q"><span class="landing__faq-q-text">Як проходить оплата по військовому контракту?</span></summary>
             <div class="landing__faq-a">Текст відповіді узгоджується з клієнтом.</div>
           </details>
-          <details class="landing__faq-itm">
+          <details class="landing__faq-itm" name="faq">
             <summary class="landing__faq-q"><span class="landing__faq-q-text">Чи можна отримати зразок перед закупівлею?</span></summary>
             <div class="landing__faq-a">Текст відповіді узгоджується з клієнтом.</div>
           </details>
-          <details class="landing__faq-itm">
+          <details class="landing__faq-itm" name="faq">
             <summary class="landing__faq-q"><span class="landing__faq-q-text">Чи доставляєте у зону бойових дій?</span></summary>
             <div class="landing__faq-a">Текст відповіді узгоджується з клієнтом.</div>
           </details>
@@ -1018,16 +1017,6 @@
                 <span class="landing__rail-value landing__rail-value--static">Пн–Пт&nbsp;9:00–18:00</span>
               </li>
             </ul>
-
-            <div class="landing__rail-note">
-              <span class="landing__rail-note-plate">
-                <svg class="landing__rail-note-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.5 3.5H7.5a2 2 0 0 0-2 2V18.5a2 2 0 0 0 2 2H16.5a2 2 0 0 0 2-2V8.5Z"/><path d="M13.5 3.5V8.5H18.5"/><path d="M8.7 11.7H13.3"/><circle cx="12" cy="15.6" r="2.5"/><path d="m10.85 15.6.85.85 1.55-1.75"/></svg>
-              </span>
-              <p class="landing__rail-note-body">
-                <strong class="landing__rail-note-title">Працюємо з&nbsp;В/Ч за договором — без передоплати</strong>
-                <span class="landing__rail-note-sub">Рахунок і&nbsp;закривні документи після узгодження&nbsp;ТЗ</span>
-              </p>
-            </div>
           </div>
         </div>
       </div>
