@@ -25,13 +25,15 @@
     .header_placeholder{height:128px}
   </style>
 
-  <!-- ПОВНА тема сайту (240KB) — важка й НЕ критична для 1-го екрана → вантажиться НЕ блокуючи рендер
-       (media-swap: лишається на DOM-позиції 1, тож .landing-перевизначення нижче коректно перекривають). -->
-  <link rel="stylesheet" href="assets/css/styles.css?v=20260602" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="assets/css/styles.css?v=20260602"></noscript>
+  <!-- ПОВНА тема сайту (240KB): reset/токени(:root)/типографіка/шапка/футер — від неї ЗАЛЕЖИТЬ лендінг
+       (var(--font-*) тощо), тож вона render-critical. Вантажиться БЛОКУЮЧЕ, але з preload, щоб качалась
+       одразу й паралельно з найвищим пріоритетом → коректний рендер з першого кадру, без FOUC. -->
+  <link rel="preload" href="assets/css/styles.css?v=20260602" as="style">
+  <link rel="preload" href="style.css?v=20260602" as="style">
+  <link rel="stylesheet" href="assets/css/styles.css?v=20260602">
 
-  <!-- стилі лендінгу (правила під .landing) — критичний візуальний шар, лишається блокуючим -->
-  <link rel="stylesheet" href="style.css?v=20260602" media="all">
+  <!-- стилі лендінгу (правила під .landing) — підключаються ПІСЛЯ теми, перекривають базу -->
+  <link rel="stylesheet" href="style.css?v=20260602">
 </head>
 
 <body>
