@@ -826,7 +826,9 @@
 }
 /* тонкі роздільники між показниками + відновлення відступів на ≥600px */
 @media (min-width: 600px) {
-  .landing__stats-itm { gap: 16px; padding: 36px 64px; }
+  /* горизонтальний паддінг — плавний: на 600–767 не розпирає 3 колонки (інакше плашку обрізає),
+     до 64px доростає лише на широких екранах */
+  .landing__stats-itm { gap: 16px; padding: clamp(24px, 4vw, 36px) clamp(16px, 5vw, 64px); }
   .landing__stats-itm + .landing__stats-itm { box-shadow: inset 1px 0 0 var(--border-soft); }
 }
 /* надпис над цифрою — реєстр BF_SUB_HEADLINE, приглушений золотий */

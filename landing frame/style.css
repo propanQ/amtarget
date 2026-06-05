@@ -208,6 +208,9 @@
 .landing__contacts.landing__contacts { padding-top: calc(var(--sec-pad) * 0.4); }
 .landing section[id] { scroll-margin-top: 92px; }
 @media (min-width: 1024px) { .landing section[id] { scroll-margin-top: 116px; } }
+/* плавний скрол по якорях (header-офсет тримає scroll-margin-top вище) */
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
 /* ───────── розділювач секцій (divider.svg — фірмовий скос-шов) ─────────
    Лінія сидить по центру шва між блоками. Суміжні секції вже дають
@@ -826,7 +829,9 @@
 }
 /* тонкі роздільники між показниками + відновлення відступів на ≥600px */
 @media (min-width: 600px) {
-  .landing__stats-itm { gap: 16px; padding: 36px 64px; }
+  /* горизонтальний паддінг — плавний: на 600–767 не розпирає 3 колонки (інакше плашку обрізає),
+     до 64px доростає лише на широких екранах */
+  .landing__stats-itm { gap: 16px; padding: clamp(24px, 4vw, 36px) clamp(16px, 5vw, 64px); }
   .landing__stats-itm + .landing__stats-itm { box-shadow: inset 1px 0 0 var(--border-soft); }
 }
 /* надпис над цифрою — реєстр BF_SUB_HEADLINE, приглушений золотий */
@@ -1607,6 +1612,35 @@
   .landing__catalog-foot .landing__cta-card-text  { grid-area: text; max-width: none; }
   /* кнопки праворуч: центруємо по вертикалі, прибираємо притиск-донизу й верхню лінію */
   .landing__catalog-foot .landing__cta-card-actions {
+    grid-area: actions;
+    align-self: center;
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+}
+
+/* ── Компактний десктоп (1024–1399): CTA-картка В РЯДУ товарів ──
+   4-в-ряд [товар товар товар CTA] влазить лише на ≥~1400px; нижче CTA «сиротіє»
+   вузькою коробкою. Тягнемо її на всю ширину рядка й розкладаємо горизонтально —
+   так само, як у футері на брейкпоінті нижче (768–1023). */
+@media (min-width: 1024px) and (max-width: 1399px) {
+  .landing__catalog-grid > .landing__cta-card {
+    flex-basis: 100%;
+    max-width: none;
+    display: grid;
+    grid-template-columns: 1fr minmax(240px, 280px);
+    grid-template-areas:
+      "head    actions"
+      "text    actions";
+    align-items: start;
+    column-gap: 44px;
+    row-gap: 16px;
+    padding: 32px 36px;
+  }
+  .landing__catalog-grid > .landing__cta-card .landing__cta-card-head { grid-area: head; }
+  .landing__catalog-grid > .landing__cta-card .landing__cta-card-text  { grid-area: text; max-width: none; }
+  .landing__catalog-grid > .landing__cta-card .landing__cta-card-actions {
     grid-area: actions;
     align-self: center;
     margin-top: 0;
